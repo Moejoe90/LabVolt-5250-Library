@@ -7,6 +7,6 @@ end
 fprintf(obj,'free'); %Free the Robot Motors
 while(obj.BytesAvailable == 0) %Wait for Robot To respond
 end
-result = fscanf(obj,'%c',obj.BytesAvailable) % Print out Robots Response, add ; to get rid of screen reporting
+result = fscanf(obj,'%c',obj.BytesAvailable) % Print out Robots Response, add to get rid of screen reporting
 
 end %Function End
