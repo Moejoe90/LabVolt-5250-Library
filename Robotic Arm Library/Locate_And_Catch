@@ -1,0 +1,101 @@
+function Locate_And_Catch(cam,obj,Org,MyFis3,poly)
+
+x = Get_Cart_Robot(obj);
+
+79
+
+Go_Cart_Robot(obj,MyFis3,5.7,0,x(1),x(2),120,-90);
+
+Go_Cart_Robot(obj,MyFis3,5.7,0,0,-250,120,-90);
+
+Stuff = snapshot(cam);
+
+Stuff = flipud(Stuff);
+
+cor = Locate_obj_Color(Org,Stuff,5);
+
+Obj_no = size(cor(1:end,1));
+
+if(cor == 0)
+
+text = 'No objects in workspace'
+
+return;
+
+end
+
+i=1;
+
+while i <= Obj_no(1)
+
+
+
+
+
+if(cor(i,3) < 150)
+
+if(cor(i,5) < 150)
+
+i=i+1;
+
+continue;
+
+end
+
+end
+
+Cam_to_World(obj,MyFis3,poly,5.7,0,cor(i,1),cor(i,2),150);
+
+c = Cam_to_World(obj,MyFis3,poly,5.7,0,cor(i,1),cor(i,2),30);
+
+Move_Joint_Robot(obj,0,-1)
+
+Wait_For_Robot(obj);
+
+pause(2);
+
+x = Get_Degree_Robot(obj);
+
+test = Go_Robot_Lock(obj,x(1),0,x(3),x(4),(x(5)+10),x(6));
+
+if(cor(i,3) > 150)
+
+Go_Cart_Robot(obj,MyFis3,x(1),0,0,-250,120,-90);
+
+Go_Cart_Robot(obj,MyFis3,5.5,0,0,-250,120,-90);
+
+i=i+1;
+
+continue;
+
+end
+
+if(cor(i,5) > 150)
+
+Go_Cart_Robot(obj,MyFis3,x(1),0,0,250,120,-90);
+
+Go_Cart_Robot(obj,MyFis3,5.5,0,0,250,120,-90);
+
+i=i+1;
+
+continue;
+
+end
+
+i=i+1;
+
+end
+
+Wait_For_Robot(obj);
+
+x = Get_Degree_Robot(obj);
+
+Go_Robot_Lock(obj,x(1),0,90,90,90,x(6));
+
+Org = snapshot(cam);
+
+Org = flipud(Org);
+
+Go_Robot_Lock(obj,x(1),0,x(3),x(4),x(5),x(6));
+
+end

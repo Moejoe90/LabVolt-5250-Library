@@ -1,0 +1,19 @@
+function Troque_Robot(obj)
+
+if(Check_Robot_State(obj) == 0)
+
+return;
+
+end
+
+fprintf(obj,'torque');
+
+while(obj.BytesAvailable == 0)
+
+end
+
+84
+
+result = fscanf(obj,'%c',obj.BytesAvailable)
+
+end

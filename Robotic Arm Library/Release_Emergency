@@ -1,0 +1,11 @@
+function result = Release_Emergency(obj)
+
+fprintf(obj,'set estop 0');
+
+while(obj.BytesAvailable == 0)
+
+end
+
+result = fscanf(obj,'%c',obj.BytesAvailable);
+
+end

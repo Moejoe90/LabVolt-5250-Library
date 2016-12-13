@@ -1,0 +1,9 @@
+function Shutdown_Robot( obj )
+
+fprintf(obj,'shutdown');
+
+fclose(obj);
+
+obj
+
+end

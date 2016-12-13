@@ -1,0 +1,57 @@
+function x = Get_Degree_Robot(obj)
+
+%Pos_Robto Takes an Object as input which refers to the serial port send a
+
+%Positiob order, Waits for the position and return it as doubles
+
+pause(1);
+
+flushinput(obj);
+
+fprintf(obj,'get pos');
+
+pause(0.25)
+
+while 1
+
+while(obj.BytesAvailable == 0)
+
+end
+
+if any(obj.BytesAvailable ~= 0)
+
+test = fscanf(obj,'%c',obj.BytesAvailable);
+
+test = test(2:end);
+
+
+
+if(test(1) == 'P')
+
+test = test(2:end);
+
+end
+
+x = str2num(test);
+
+x = x(1:6);
+
+break
+
+end
+
+end
+
+x(1) = x(1)/20000;
+
+x(2) = x(2)/525;
+
+x(3) = x(3)*0.001699*-1 ;
+
+x(4) = x(4)/666.66667*-1;
+
+x(5) = x(5)*0.0015 + 105;
+
+x(6) = x(6)/666.667;
+
+end

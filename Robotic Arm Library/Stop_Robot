@@ -1,0 +1,11 @@
+function Stop_Robot(obj)
+
+fprintf(obj,'stop');
+
+while(obj.BytesAvailable == 0)
+
+end
+
+test = fscanf(obj,'%c',obj.BytesAvailable);
+
+end

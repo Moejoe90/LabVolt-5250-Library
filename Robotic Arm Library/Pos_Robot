@@ -1,0 +1,35 @@
+function x = Pos_Robot( obj )
+
+%Pos_Robto Takes an Object as input which refers to the serial port send a
+
+%Positiob order, Waits for the position and return it as doubles
+
+83
+
+flushinput(obj)
+
+fprintf(obj,'get pos');
+
+while 1
+
+pause(0.25)
+
+if any(obj.BytesAvailable ~= 0)
+
+test = fscanf(obj,'%c',obj.BytesAvailable);
+
+test = test(2:end);
+
+x = str2num(test);
+
+x = x(1:6);
+
+break
+
+end
+
+end
+
+flushinput(obj)
+
+end

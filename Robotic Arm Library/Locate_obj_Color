@@ -1,0 +1,229 @@
+function centre = Locate_obj_Color( Org,Stuff,kill)
+
+c = imcomplement(Org);
+
+z = imadd(c,Stuff);
+
+%imshow(z);
+
+c2 = imcomplement(Stuff);
+
+%imshow(Stuff);
+
+%imshow(Org);
+
+%imshow(c2);
+
+z2 = imadd(c2,Org);
+
+%imshow(z2);
+
+z = imcomplement(z);
+
+%imshow(z);
+
+b1 = im2bw(z,0.105);
+
+%imshow(b1);
+
+z2 = imcomplement(z2);
+
+81
+
+%imshow(z2);
+
+b2 = im2bw(z2,0.101);
+
+%imshow(b2);
+
+b1 = im2bw(z,0.101);
+
+%imshow(b1);
+
+b3= (b1|b2);
+
+%imshow(b3);
+
+b3f = imfill(b3,'holes');
+
+%imshow(b3f);
+
+se = strel('disk', kill);
+
+b3o = imopen(b3f,se);
+
+%imshow(b3o);
+
+Iregion = regionprops(b3o, 'centroid');
+
+centers = [Iregion.Centroid];
+
+s = size(centers);
+
+if(s==0)
+
+centre=0;
+
+return;
+
+end
+
+sh = int32(s(1,2) / 2);
+
+y(1:sh,1) = centers(1,1:2:s(1,2));
+
+x(1:sh,1) = centers(1,2:2:s(1,2));
+
+centre = [x,y];
+
+%Iregion.Orientation
+
+b3oi = flipud(b3o);
+
+b3oi = fliplr(b3oi);
+
+[Labels,numLabels] = bwlabel(b3oi);
+
+[I,J] = find(Labels==1);
+
+test = size(Labels);
+
+counter =1;
+
+while(counter <= numLabels)
+
+mmmm(1:test(1),1:test(2)) = 0;
+
+i=1;
+
+j=1;
+
+while(j<test(2))
+
+while(i<test(1))
+
+if(Labels(i,j)==counter)
+
+mmmm(i,j)=1;
+
+end
+
+i=i+1;
+
+end
+
+i=1;
+
+j=j+1;
+
+end
+
+b4o = (b3oi&mmmm);
+
+b4o = flipud(b4o);
+
+b4o = fliplr(b4o);
+
+%imshow(b4o);
+
+red = Stuff(:,:,1); % Red channel
+
+green = Stuff(:,:,2); % Green channel
+
+blue = Stuff(:,:,3); % Blue channel
+
+82
+
+i=1;
+
+j=1;
+
+c=1;
+
+redmed =0;
+
+greenmed = 0;
+
+bluemed=0;
+
+while(j<test(2))
+
+while(i<test(1))
+
+if((red(i,j)&&b4o(i,j))==1)
+
+Red_seg(i,j) = red(i,j);
+
+redmed = double(red(i,j))+redmed;
+
+green_seg(i,j) = green(i,j);
+
+greenmed = double(green(i,j))+greenmed;
+
+blue_seg(i,j) = blue(i,j);
+
+bluemed = double(blue(i,j))+bluemed;
+
+c=c+1;
+
+end
+
+i=i+1;
+
+end
+
+i=1;
+
+j=j+1;
+
+end
+
+redmed = redmed/c;
+
+greenmed = greenmed/c;
+
+bluemed = bluemed/c;
+
+rgbImage = cat(3, Red_seg, green_seg, blue_seg);
+
+%imshow(rgbImage);
+
+imshow(b3o);
+
+centre(counter,3:5) = [redmed greenmed bluemed];
+
+counter=counter+1;
+
+clear rgbImage Red_seg green_seg blue_seg;
+
+end
+
+centre(1:end,3:5) = flipud(centre(1:end,3:5));
+
+return
+
+function Move_Joint_Robot(obj,x,y)
+
+if(x<0 || x >5 || (y ~= 1 && y ~= -1))
+
+output = 'ERROR INPUT'
+
+return;
+
+end
+
+if(Check_Robot_State(obj) == 0)
+
+return;
+
+end
+
+formatSpec = 'move 50 %d %d';
+
+string = sprintf(formatSpec,x,y);
+
+fprintf(obj,string);
+
+
+
+end
