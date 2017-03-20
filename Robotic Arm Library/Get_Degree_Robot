@@ -1,57 +1,48 @@
 function x = Get_Degree_Robot(obj)
 
-%Pos_Robto Takes an Object as input which refers to the serial port send a
+%Gets the coordinates from the Robot Arm controller and transforms them to Regular degree cartesians 
 
-%Positiob order, Waits for the position and return it as doubles
+pause(1); %Wait for a second
 
-pause(1);
+flushinput(obj); %Flush the input buffer
 
-flushinput(obj);
+fprintf(obj,'get pos'); %Send a position request to the Robot
 
-fprintf(obj,'get pos');
-
-pause(0.25)
+pause(0.25) %Wait a bit
 
 while 1
 
-while(obj.BytesAvailable == 0)
-
+while(obj.BytesAvailable == 0) %Wait until there is data
 end
 
-if any(obj.BytesAvailable ~= 0)
+if any(obj.BytesAvailable ~= 0) % If there is a replay 
+test = fscanf(obj,'%c',obj.BytesAvailable); %Get coordinates 
 
-test = fscanf(obj,'%c',obj.BytesAvailable);
-
-test = test(2:end);
-
+test = test(2:end); %Conduct matrix operation 
 
 
-if(test(1) == 'P')
 
-test = test(2:end);
-
+if(test(1) == 'P') %Check if the replay is indeed a position
+test = test(2:end); %Conduct a matrix opperation 
 end
 
-x = str2num(test);
+x = str2num(test); %Change from ASCII to Intergers 
 
-x = x(1:6);
-
+x = x(1:6); %Arrange coordinates in an array
 break
-
+end
 end
 
-end
+x(1) = x(1)/20000; %Grip
 
-x(1) = x(1)/20000;
+x(2) = x(2)/525; %Wrist Rotation
 
-x(2) = x(2)/525;
+x(3) = x(3)*0.001699*-1 ; %Wrist position
 
-x(3) = x(3)*0.001699*-1 ;
+x(4) = x(4)/666.66667*-1; %Hand
 
-x(4) = x(4)/666.66667*-1;
+x(5) = x(5)*0.0015 + 105; %Shoulder
 
-x(5) = x(5)*0.0015 + 105;
-
-x(6) = x(6)/666.667;
+x(6) = x(6)/666.667; %Base
 
 end

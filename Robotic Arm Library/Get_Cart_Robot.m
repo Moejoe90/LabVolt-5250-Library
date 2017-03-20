@@ -1,41 +1,21 @@
 function cor = Get_Cart_Robot(obj)
 
-%x2 =
+%Get Articulate degrees from Robot and return a Cartesean represenation of the degrees 
 
-cosd(DEG1)*((230*cosd(DEG2+DEG3))+(380*cosd(DEG2))+(150*sind(DEG2+DEG3+DEG4
+B = Get_Degree_Robot(obj); %Get articulate degrees from the robot
 
-)));
+deg1 = B(6); %Base Degree
+deg2 = B(5); %Shoulder Degree
+deg3 = B(4); %Hand Degree
+deg4 = B(3); %Wrist Degree
 
-%y2 =
+Z = 384 + 360.4*sind(deg2) + 228.5*sind(deg3) + 165.4*sind(deg4); %Z coordinate
 
-sind(DEG1)*((230*cosd(DEG2+DEG3))+(380*cosd(DEG2))+(150*sind(DEG2+DEG3+DEG4
+R = 360.4*cosd(deg2) + 228.5*cosd(deg3) + 165.4*cosd(deg4)+3; %R coodinate
 
-)));
+x = R*cosd(deg1); %Get X Coordinate 
+y = R*sind(deg1); %Get Y Coordinate
 
-70
-
-%z2 = 380 + (380*sind(DEG2))+ (230*sind(DEG2+DEG3))-
-
-(150*cosd(DEG2+DEG3+DEG4));
-
-B = Get_Degree_Robot(obj);
-
-deg1 = B(6);
-
-deg2 = B(5);
-
-deg3 = B(4);
-
-deg4 = B(3);
-
-Z = 384 + 360.4*sind(deg2) + 228.5*sind(deg3) + 165.4*sind(deg4);
-
-R = 360.4*cosd(deg2) + 228.5*cosd(deg3) + 165.4*cosd(deg4)+3;
-
-x = R*cosd(deg1);
-
-y = R*sind(deg1);
-
-cor = [x y Z];
+cor = [x y Z]; %Put Cartisean coordinates in an Array 
 
 end
