@@ -1,5 +1,5 @@
 function Stop_Robot(obj)
-
+%Immedietly Stop any operations the robot is performing
 fprintf(obj,'stop');
 
 while(obj.BytesAvailable == 0)
