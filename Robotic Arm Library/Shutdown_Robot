@@ -1,9 +1,10 @@
 function Shutdown_Robot( obj )
 
-fprintf(obj,'shutdown');
+%Shutdown Robot arm, Finalize shutdown procedure by releaseing the COM port 
+fprintf(obj,'shutdown'); %Send the signal to the Robot Controller
 
-fclose(obj);
+fclose(obj); %Release Robot Controller object in matlab
 
-obj
+obj %Print result
 
 end
